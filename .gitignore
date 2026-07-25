@@ -1,0 +1,31 @@
+# ---------------------------------------------------------------------------
+# Data and generated imagery
+#
+# The focusStep corpus and the 4x-upscaled outputs total ~2.1 GB and are not
+# versioned here. See docs/dataset.md for how to obtain and lay them out.
+# ---------------------------------------------------------------------------
+dataset/
+dataset_results_*/
+
+# Model weights and caches
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+.cache/
+checkpoints/
+
+# Python
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

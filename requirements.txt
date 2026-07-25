@@ -1,0 +1,11 @@
+torch>=2.1
+transformers>=4.38
+accelerate
+easyocr
+sentencepiece
+opencv-python-headless
+Pillow
+numpy
+scikit-image
+matplotlib
+tqdm
