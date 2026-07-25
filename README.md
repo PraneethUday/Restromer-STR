@@ -42,12 +42,36 @@ Two findings drove the model choices:
   domain, which is part of why a dedicated deblurring stage was added in front
   of it.
 
+<p align="center">
+  <img src="docs/images/finetuned_comparison_bar.png" width="100%" alt="PSNR and SSIM at each defocus level for input, pretrained Restormer, and fine-tuned Restormer">
+</p>
+
+Fine-tuning is the difference between a stage that helps and one that doesn't:
+the pretrained checkpoint tracks the unrestored input almost exactly, while
+fine-tuning on focusStep lifts PSNR by up to +3.2 dB and SSIM by up to +0.18,
+with the gap widening as blur gets worse.
+
+### Restoration stage architecture
+
+<p align="center">
+  <img src="docs/images/restormer_architecture_diagram.png" width="70%" alt="Restormer architecture: patch embedding, 3-level transformer encoder, latent bottleneck, 3-level decoder with skip connections, refinement, and output projection">
+</p>
+
+26.1M-parameter U-Net of transformer blocks (MDTA + GDFN), encoder levels at
+full, 1/2, and 1/4 resolution, a bottleneck at 1/8 resolution, and a decoder
+that concatenates the matching encoder skip connection at each level before
+a final refinement stage.
+
 ---
 
 ## Headline results
 
 Measured on 56 pages at blur levels 2–4. Full tables and caveats in
 [docs/results.md](docs/results.md).
+
+<p align="center">
+  <img src="docs/images/blur_level_progression.png" width="100%" alt="The same text patch at ground truth and defocus levels 1 through 4, showing increasing blur">
+</p>
 
 | Metric | Value |
 |---|---|
@@ -69,6 +93,29 @@ restoration SSIM/PSNR *rise* slightly with blur level — the restoration metric
 and the task metric point in opposite directions, which is the central
 methodological problem of this project.
 [docs/results.md](docs/results.md) explains why.
+
+### Fine-tuned vs. pretrained, by blur level
+
+Input, pretrained-checkpoint output, fine-tuned output, and ground truth,
+side by side at each defocus level:
+
+<p align="center">
+  <img src="docs/images/level_1_finetuned_vs_pretrained.png" width="100%" alt="Defocus level 1 comparison: input, pretrained, fine-tuned, and ground truth">
+</p>
+<p align="center">
+  <img src="docs/images/level_2_finetuned_vs_pretrained.png" width="100%" alt="Defocus level 2 comparison: input, pretrained, fine-tuned, and ground truth">
+</p>
+<p align="center">
+  <img src="docs/images/level_3_finetuned_vs_pretrained.png" width="100%" alt="Defocus level 3 comparison: input, pretrained, fine-tuned, and ground truth">
+</p>
+<p align="center">
+  <img src="docs/images/level_4_finetuned_vs_pretrained.png" width="100%" alt="Defocus level 4 comparison: input, pretrained, fine-tuned, and ground truth">
+</p>
+
+The fine-tuned output stays legible well past the point where the pretrained
+checkpoint's gains over the raw input flatten out — visible confirmation of
+the PSNR/SSIM gap above, and consistent with recognition accuracy holding up
+through level 3 before collapsing at level 4.
 
 ---
 
