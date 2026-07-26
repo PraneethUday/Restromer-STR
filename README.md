@@ -51,17 +51,6 @@ the pretrained checkpoint tracks the unrestored input almost exactly, while
 fine-tuning on focusStep lifts PSNR by up to +3.2 dB and SSIM by up to +0.18,
 with the gap widening as blur gets worse.
 
-### Restoration stage architecture
-
-<p align="center">
-  <img src="docs/images/restormer_architecture_diagram.png" width="70%" alt="Restormer architecture: patch embedding, 3-level transformer encoder, latent bottleneck, 3-level decoder with skip connections, refinement, and output projection">
-</p>
-
-26.1M-parameter U-Net of transformer blocks (MDTA + GDFN), encoder levels at
-full, 1/2, and 1/4 resolution, a bottleneck at 1/8 resolution, and a decoder
-that concatenates the matching encoder skip connection at each level before
-a final refinement stage.
-
 ---
 
 ## Headline results
